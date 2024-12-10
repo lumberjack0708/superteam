@@ -4,7 +4,7 @@ from linebot.v3.messaging import MessagingApi  # 更改：導入新的 Messaging
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage,ImageMessage,LocationMessage,LocationSendMessage,QuickReply,QuickReplyButton,LocationAction
 from gpt import get_text
-from text_function import main_text,get_store
+from text_function import main_text,store,get_from_store
 import os
 import time
 from dotenv import load_dotenv
@@ -56,6 +56,7 @@ def handle_message(event):
         message = TextSendMessage(text=gpt_text)
     else:
         if_need_address = True
+        store(res_text)
         message = TextSendMessage(
             text = "請分享你的位置",
             quick_reply=QuickReply(
@@ -74,7 +75,7 @@ def handle_location_message(event):
     global if_need_address
     if if_need_address == True:
         address = event.message.address
-        store_text = get_store()
+        store_text = get_from_store()
         text = f"使用者的問題及已取得的相關資訊:{store_text};\n使用者的位置:{address};\n幫我生成簡單回應並給予建議"
         gpt_text = get_text(text)
         message = TextSendMessage(text=gpt_text)

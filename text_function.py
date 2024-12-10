@@ -23,7 +23,7 @@ def main_text(text,predict=False):
                 result = url_list[i]
                 break
         if is_get == True:
-            refresh = time_space(get_store(result))
+            refresh = time_space(get_info_from_json(result))
             if refresh == True:
                 res = get_specia_reply(text,result)
                 res = cobi_test(text,result,res)
@@ -80,7 +80,7 @@ def get_from_json():
         data = json.loads(data)
     return data
 
-def get_store(title:str):
+def get_info_from_json(title:str):
     information_store = get_from_json()
     if title in information_store:
         return information_store[title]
@@ -98,3 +98,9 @@ def get_info(key):
     information_store = get_from_json()
     if key in information_store:
         return information_store[key]["info"]
+    
+def get_from_store():
+    with open('store.txt','r',encoding='utf-8') as f:
+        text = f.read()
+        f.close()
+    return text
