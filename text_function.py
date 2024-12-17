@@ -5,6 +5,7 @@ from datetime import datetime
 
 with open ('keyword_url.json','r',encoding='utf-8') as f:
     url_dict = f.read()
+    #轉為python
     url_dict = json.loads(url_dict)
 
 with open ('keyword.json','r',encoding='utf-8') as f:
