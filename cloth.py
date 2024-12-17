@@ -9,15 +9,27 @@ with open("information_store.json","r",encoding="utf-8") as f:
     information_dict = json.loads(information_dict)
 
 
-# print(information_dict)
+# # print(information_dict)
+# # print(type(information_dict))
+# print(type(cloth_dict["recommendations"]))
+# cloth1 = cloth_dict["recommendations"][0]
+# #字典
+# print(type(cloth1))
+# print('-'*50)
+# cloth = cloth1["clothing"]
+# for i in range(len(cloth)):
+#     print(cloth[i])
 
-# print(type(information_dict))
+cloth = {
+    "summer" : ["T-shirt","Shorts","Sandals"],
+    "winter" : ["Coat","Sweater","Boots"],
+    "spring" : ["T-shirt","Jeans","Sneakers"],
+}
 
-print(type(cloth_dict["recommendations"]))
-cloth1 = cloth_dict["recommendations"][0]
-#字典
-print(type(cloth1))
+cl = cloth["summer"]
+t = ""
+for i in range(len(cl)):
+    print(cl[i])
+    t += cl[i] + " "
 print('-'*50)
-cloth = cloth1["clothing"]
-for i in range(len(cloth)):
-    print(cloth[i])
+print(t)
