@@ -3,8 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
 
+# 我把儲存檔案的都丟在text_function.py 的store_to_json
+# 爬到的會存在information_store.json
 def load_json(file_path):
     """讀取 JSON 檔案"""
     with open(file_path, "r", encoding="utf-8") as f:
@@ -25,10 +26,9 @@ def scrape_data(url, xpath):
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("window-size=1920x1080")
 
     # 啟動 Selenium 瀏覽器
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     try:
         driver.get(url)  # 訪問網址
         driver.implicitly_wait(10)  # 等待加載完成
@@ -61,5 +61,4 @@ def main():
     # 儲存結果至 output.json
     save_json(output_data, output_file)
 
-if __name__ == "__main__":
-    main()
+
