@@ -1,5 +1,7 @@
 import google.generativeai as generativeai
+import os
 
-generativeai.configure(api_key="AIzaSyA_sNkkcQFPrZAWCxJwGWl2ji3f8uiATg8")
+api_key = os.getenv("gemini_api_key")
+generativeai.configure(api_key=api_key)
 response = generativeai.GenerativeModel("gemini-2.0-flash-exp").generate_content("生命的意義是甚麼？")
 print(response.text)
