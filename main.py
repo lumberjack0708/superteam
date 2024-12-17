@@ -50,23 +50,28 @@ def handle_message(event):
     #傳送文字訊息
     receive_text = event.message.text
     print(receive_text)
-    res_text, is_main = main_text(receive_text)
-    if is_main == False:
-        gpt_text = get_text(res_text)
-        message = TextSendMessage(text=gpt_text)
+    if receive_text == "天氣":
+        message = TextSendMessage(text="請上傳一張天氣圖片")
+        line_bot_api.reply_message(event.reply_token, message)
+        return
     else:
-        if_need_address = True
-        store(res_text)
-        message = TextSendMessage(
-            text = "請分享你的位置",
-            quick_reply=QuickReply(
-                items = [
-                    QuickReplyButton(
-                        action=LocationAction(label="位置")
-                    )
-                ]
+        res_text, is_main = main_text(receive_text)
+        if is_main == False:
+            gpt_text = get_text(res_text)
+            message = TextSendMessage(text=gpt_text)
+        else:
+            if_need_address = True
+            store(res_text)
+            message = TextSendMessage(
+                text = "請分享你的位置",
+                quick_reply=QuickReply(
+                    items = [
+                        QuickReplyButton(
+                            action=LocationAction(label="位置")
+                        )
+                    ]
+                )
             )
-        )
     
     line_bot_api.reply_message(event.reply_token, message)
 
