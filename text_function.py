@@ -26,7 +26,7 @@ def main_text(text,predict=False):
         if is_get == True:
             refresh = time_space(get_info_from_json(result))
             if refresh == True:
-                res = get_specia_reply(text,result)
+                res = get_specia_reply(result)
                 res = cobi_test(text,result,res)
                 return res,is_get
             else:
@@ -39,11 +39,11 @@ def main_text(text,predict=False):
             return res,is_get
 
 # 關鍵詞搜索及爬蟲資料儲存   
-def get_specia_reply(text,key):
-    from spider import get_inf
+def get_specia_reply(key):
+    from URL_load import scrape_data
     url = url_dict[key][0]
     xpath = url_dict[key][1]
-    re_inf = get_inf(url,xpath)
+    re_inf = scrape_data(url,xpath)
     # print(f"已取得資訊{re_inf}")
     information_store = get_from_json()
     information_store[key]["info"] = re_inf
