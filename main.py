@@ -3,13 +3,13 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.v3.messaging import MessagingApi  # 更改：導入新的 MessagingApi
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage,ImageMessage,LocationMessage,LocationSendMessage,QuickReply,QuickReplyButton,LocationAction
-from gpt import get_text
+from gemini import chat
 from text_function import main_text,store,get_from_store
 import os
-import time
+from vision import vision
 from dotenv import load_dotenv
 from record_image import record_image
-from vision import vision
+
 
 # setting
 app = Flask(__name__)
@@ -57,7 +57,7 @@ def handle_message(event):
     else:
         res_text, is_main = main_text(receive_text)
         if is_main == False:
-            gpt_text = get_text(res_text)
+            gpt_text = chat(res_text)
             message = TextSendMessage(text=gpt_text)
         else:
             if_need_address = True
@@ -82,7 +82,7 @@ def handle_location_message(event):
         address = event.message.address
         store_text = get_from_store()
         text = f"使用者的問題及已取得的相關資訊:{store_text};\n使用者的位置:{address};\n幫我生成簡單回應並給予建議"
-        gpt_text = get_text(text)
+        gpt_text = chat(text)
         message = TextSendMessage(text=gpt_text)
         line_bot_api.reply_message(event.reply_token, message)
     else:
@@ -107,11 +107,10 @@ def handle_image_message(event):
     with open(file_path, 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
-    record_image()
     pediction = vision()
     print(pediction)
     res_text = main_text(pediction,predict=True)
-    gpt_text = get_text(res_text)
+    gpt_text = chat(res_text)
     message = TextSendMessage(text=gpt_text)
     line_bot_api.reply_message(event.reply_token, message)
 
