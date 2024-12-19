@@ -24,5 +24,3 @@ def chat(text):
     # 在send_message中同樣可以將stream參數設定為True，啟用串流模式
     response = chat.send_message(text)
     return response.text
-
-print(chat("What is the capital of Taiwan?"))

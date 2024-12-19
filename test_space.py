@@ -1,6 +1,6 @@
 # 程式碼測試區
 
 from text_function import get_specia_reply,main_text
+from gemini import chat
 
-text = main_text("明日降雨機率")
-print(text)
+print(chat("今年的總統是誰?"))
