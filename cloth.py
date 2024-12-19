@@ -8,7 +8,10 @@ with open("information_store.json","r",encoding="utf-8") as f:
     information_dict = f.read()
     information_dict = json.loads(information_dict)
 
-
+for temperature_range, clothing in cloth_dict['cloth'].items():
+    print(f"溫度範圍: {temperature_range}")
+    print("建議穿著: ", ", ".join(clothing))
+    print('-' * 50)
 # # print(information_dict)
 # # print(type(information_dict))
 # print(type(cloth_dict["recommendations"]))
@@ -33,3 +36,7 @@ for i in range(len(cl)):
     t += cl[i] + " "
 print('-'*50)
 print(t)
+
+
+
+
