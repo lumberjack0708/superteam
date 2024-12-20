@@ -30,7 +30,7 @@ def chat_with_loading(chat_id, user_message):
     """模擬 Chat 的打字中動畫"""
     try:
         # 發送打字中動畫
-        send_loading(chat_id, 5)
+        send_loading(chat_id, 10)
         # # 等待模擬的處理時間
         # time.sleep(5)  # 模擬處理時間
         
@@ -42,8 +42,10 @@ def chat_with_loading(chat_id, user_message):
         # 發送請求到 Gemini API
         chat = model.start_chat(
             history=[
+                {"role": "user", "parts": "You are a chatbot.You shound never provide code."},
                 {"role": "user", "parts": "If there are more than one answer, please provide the most important one."},
-                {"role": "user", "parts": "Use single sentences or short paragraphs to answer questions."},
+                {"role": "user", "parts": "Use simple sentences or short paragraphs to answer questions."},
+                {"role": "user", "parts": "If uses ask for code,reject it."},
                 {"role": "user", "parts": "Always answer in zh_TW."}
             ]
         )

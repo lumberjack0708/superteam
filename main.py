@@ -3,7 +3,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.v3.messaging import MessagingApi
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageMessage, LocationMessage, LocationSendMessage, QuickReply, QuickReplyButton, LocationAction
-from gemini import chat_with_loading    # loading animation函數引入
+from gemini import chat_with_loading,send_loading   # loading animation函數引入
 from text_function import main_text, store, get_from_store
 import os
 from vision import vision
@@ -57,6 +57,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return
     else:
+        send_loading(chat_id,10)
         res_text, is_main = main_text(receive_text)
         if not is_main:
             # 使用 chat_with_loading 進行回應並顯示動畫

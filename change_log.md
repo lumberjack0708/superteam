@@ -13,7 +13,10 @@
 - 於`gemini.py`新增loading animation功能，用戶發送訊息後會先跳loading動畫，生成結束後輸出結果會將loading結果替換
 - 於`main.py`更新程式碼片段使其可調用`gemini.py`中的`chat_with_loading`函數
 - 於`vision`中增加loading animation
+- 在爬蟲時增加loading animation
 ### fixed
 - 修改`.env.example`參數內容，使其符合目前版本
 - 取消`gemini.py`中`chat_with_loading`的time.sleep
+- 調整loading animation秒數
+- 對gemini的prompts進行調整
 

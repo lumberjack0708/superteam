@@ -43,7 +43,8 @@ def chat_with_loading(chat_id, user_message):
         chat = model.start_chat(
             history=[
                 {"role": "user", "parts": "If there are more than one answer, please provide the most important one."},
-                {"role": "user", "parts": "Use single sentences or short paragraphs to answer questions."},
+                {"role": "user", "parts": "Use simple sentences or short paragraphs to answer questions."},
+                {"role": "user", "parts": "Never provide any Program code"},
                 {"role": "user", "parts": "Always answer in zh_TW."}
             ]
         )
