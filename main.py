@@ -105,13 +105,14 @@ def handle_image_message(event):
     message_content = line_bot_api.get_message_content(event.message.id)
     file_path = f"image/user_input.jpg"
     print(file_path)
+    chat_id = event.source.user_id
     with open(file_path, 'wb') as fd:
         for chunk in message_content.iter_content():
             fd.write(chunk)
-    prediction = vision()
+    prediction = vision(chat_id)
     print(prediction)
     res_text = main_text(prediction, predict=True)
-    response = chat_with_loading(event.source.user_id, res_text)
+    response = chat_with_loading(chat_id, res_text)
     message = TextSendMessage(text=response)
     line_bot_api.reply_message(event.reply_token, message)
 
