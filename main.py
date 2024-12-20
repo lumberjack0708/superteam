@@ -50,7 +50,7 @@ def handle_message(event):
     #傳送文字訊息
     receive_text = event.message.text
     print(receive_text)
-    if receive_text == "天氣":
+    if receive_text == "@天氣":
         message = TextSendMessage(text="請上傳一張天氣圖片")
         line_bot_api.reply_message(event.reply_token, message)
         return
