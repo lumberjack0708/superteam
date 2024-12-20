@@ -14,3 +14,4 @@
 - 於`main.py`更新程式碼片段使其可調用`gemini.py`中的`chat_with_loading`函數
 ### fixed
 - 修改`.env.example`參數內容，使其符合目前版本
+- 取消`gemini.py`中`chat_with_loading`的time.sleep

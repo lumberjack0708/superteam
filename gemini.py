@@ -31,8 +31,8 @@ def chat_with_loading(chat_id, user_message):
     try:
         # 發送打字中動畫
         send_loading(chat_id, 5)
-        # 等待模擬的處理時間
-        time.sleep(5)  # 模擬處理時間
+        # # 等待模擬的處理時間
+        # time.sleep(5)  # 模擬處理時間
         
         # 配置 Gemini API
         api_key = os.getenv("gemini_api_key")
