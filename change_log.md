@@ -12,6 +12,8 @@
 - 新增`Loading_ex.py`，功能為使用者發送訊息時先有loading animation動畫，回覆生成結束之後才會取代動畫輸出結果，為範例程式碼
 - 於`gemini.py`新增loading animation功能，用戶發送訊息後會先跳loading動畫，生成結束後輸出結果會將loading結果替換
 - 於`main.py`更新程式碼片段使其可調用`gemini.py`中的`chat_with_loading`函數
+- 於`vision`中增加loading animation
 ### fixed
 - 修改`.env.example`參數內容，使其符合目前版本
 - 取消`gemini.py`中`chat_with_loading`的time.sleep
+
