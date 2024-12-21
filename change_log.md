@@ -20,3 +20,11 @@
 - 調整loading animation秒數
 - 對gemini的prompts進行調整
 
+
+ 2024-12-21
+### added
+- 於`cloth.py` 中新增讀取氣溫及降雨機率功能
+- 於`cloth.json`增加參數內容
+
+
+
