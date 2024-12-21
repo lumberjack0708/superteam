@@ -2,6 +2,9 @@ import re
 import json
 import time
 from datetime import datetime
+import time
+from bs4 import BeautifulSoup
+from selenium import webdriver
 
 with open ('keyword_url.json','r',encoding='utf-8') as f:
     url_dict = f.read()
@@ -105,3 +108,92 @@ def get_from_store():
         text = f.read()
         f.close()
     return text
+
+# 地區對應的 CID 字典
+CID_MAPPING = {
+    "基隆市": "11017",
+    "台北市": "63",
+    "臺北市": "63",
+    "新北市": "65",
+    "桃園市": "68",
+    "新竹市": "10018",
+    "新竹縣": "10004",
+    "苗栗縣": "10005",
+    "台中市": "66",
+    "彰化縣": "10007",
+    "南投縣": "10008",
+    "雲林縣": "10009",
+    "嘉義市": "10020",
+    "嘉義縣": "10010",
+    "台南市": "67",
+    "高雄市": "64",
+    "屏東縣": "10013",
+    "宜蘭縣": "10002",
+    "花蓮縣": "10015",
+    "澎湖縣": "10016",
+    "金門縣": "09020",
+    "連江縣": "09007"
+}
+
+def scrape_table_selenium(cid):
+    url = f"https://www.cwa.gov.tw/V8/C/W/County/County.html?CID={cid}"
+    driver = webdriver.Chrome()
+    driver.get(url)
+    time.sleep(3)  # 等待 JavaScript 加載完成
+    html = driver.page_source
+    driver.quit()
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.find("table", {"id": "PC_Week_MOD", "class": "table table-bordered"})
+    if not table:
+        return []
+
+    rows = table.find_all("tr")
+    table_data = []
+    for row in rows:
+        cells = row.find_all(["td", "th"])
+        row_data = []
+        for cell in cells:
+            celsius_span = cell.find("span", class_="tem-C is-active")
+            if celsius_span:
+                row_data.append(celsius_span.get_text(strip=True))
+            else:
+                row_data.append(cell.get_text(strip=True))
+        table_data.append(row_data)
+    return table_data
+
+def format_weather_output(table_data):
+    if not table_data or len(table_data) < 2:
+        return "表格資料不足，請稍後再試。"
+
+    location = table_data[0][0]
+    dates = table_data[0][1:]
+    output = f"{location} - 🌤️ 未來一周天氣預報\n\n"
+
+    for date_idx, date in enumerate(dates):
+        output += f"🗓️ {date}\n"
+        for row in table_data[1:]:
+            label = row[0]
+            value = row[date_idx + 1]
+            if label == "白天":
+                emoji = "☀️"
+            elif label == "晚上":
+                emoji = "🌙"
+            elif label == "體感溫度":
+                emoji = "🌡️"
+            elif label == "紫外線":
+                emoji = "🌞"
+            else:
+                emoji = ""
+            output += f"{emoji} {label}: {value}\n"
+        output += "\n"
+    return output
+
+def get_weather_forecast(location):
+    cid = CID_MAPPING.get(location)
+    if not cid:
+        return "地區名稱無效，請重新輸入。"
+
+    table_data = scrape_table_selenium(cid)
+    if not table_data:
+        return "無法取得天氣資料，請稍後再試。"
+    return format_weather_output(table_data)
