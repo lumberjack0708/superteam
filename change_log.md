@@ -30,3 +30,6 @@
 ## 2024-12-21
 ### added
 - 創建`weather_forecast.py` 增加抓取一周天氣預報
+- 增加`get_weather_forecast`可接收的輸入類型
+- 將get_weather_forecast串接至main
+### fixed
