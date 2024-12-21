@@ -53,6 +53,7 @@ python main.py
 - `@降雨機率`：查詢降雨機率
 
 ## 專案架構
+```
 superteam/
 ├── main.py               # 主程式進入點
 ├── gemini.py             # Google Gemini AI 整合
@@ -63,6 +64,7 @@ superteam/
 ├── URL_load.py           # 網頁爬蟲功能
 ├── requirements.txt      # 相依套件清單
 └── .env.example          # 環境變數範例
+```
 ## 版本更新
 詳細更新資訊請參考 [change_log.md](change_log.md)。
 
