@@ -27,8 +27,3 @@
 - 於`cloth.json`增加參數內容
 
 
-## 2024-12-21
-### added
-- 於`text_function.py`中新增時間跟爬蟲功能
-- 於`text_function.py`中新增天氣預報
-- 於`main.py`整合至 `text_function.py`，支援根據地區名稱查詢天氣資料

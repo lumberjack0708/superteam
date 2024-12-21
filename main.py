@@ -116,31 +116,6 @@ def handle_image_message(event):
     response = chat_with_loading(chat_id, res_text)
     message = TextSendMessage(text=response)
     line_bot_api.reply_message(event.reply_token, message)
-
-
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    receive_text = event.message.text.strip()
-
-    if receive_text.startswith("天氣預報"):
-        location = receive_text.split(" ", 1)[-1]
-        forecast = get_weather_forecast(location)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=forecast)
-        )
-    else:
-        # 原有的邏輯
-        res_text, is_main = main_text(receive_text)
-        if not is_main:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=res_text)
-            )
-        else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="無效的輸入指令。")
-            )
+    
 if __name__ == "__main__":
     app.run()
