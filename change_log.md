@@ -27,3 +27,6 @@
 - 於`cloth.json`增加參數內容
 
 
+## 2024-12-21
+### added
+- 創建`weather_forecast.py` 增加抓取一周天氣預報
