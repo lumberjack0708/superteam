@@ -12,6 +12,32 @@ for temperature_range, clothing in cloth_dict['cloth'].items():
     print(f"溫度範圍: {temperature_range}")
     print("建議穿著: ", ", ".join(clothing))
     print('-' * 50)
+
+
+json_data = information_dict  # 定義 json_data
+data = json_data["@氣溫"]["info"]
+keelung_temp = data[data.index("基隆市") + 1]  # 獲取基隆市的氣溫範圍
+print(keelung_temp)  # 輸出：16~16
+
+data = json_data["@降雨機率"]["info"]
+taipei_rain = data[data.index("臺北市") + 1]  # 獲取臺北市的降雨機率
+print(taipei_rain)  # 輸出：30%
+
+
+from datetime import datetime, timedelta
+
+last_update = datetime.strptime(json_data["@氣溫"]["time"], "%Y-%m-%d %H:%M")
+update_interval = timedelta(hours=json_data["@氣溫"]["space"])
+now = datetime.now()
+
+if now - last_update >= update_interval:
+    print("需要更新氣溫資料")
+else:
+    print("資料仍然有效")
+
+# # print(information_dict)
+# # print(type(information_dict))
+
 # # print(information_dict)
 # # print(type(information_dict))
 # print(type(cloth_dict["recommendations"]))
