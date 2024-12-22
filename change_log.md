@@ -18,3 +18,10 @@
 ### added
 - 於`cloth.py` 中新增讀取氣溫及降雨機率功能
 - 於`cloth.json`增加參數內容
+
+## [1.2.0] - 2024-12-22
+### added
+- 新增`requirements.txt`
+- 於`weather_forecast.py`中新增`get_city`以讀取地址訊息中的城市
+### changed
+- 更新`main.py`程式碼片段，使其可調用`weather_forecast.py`中的`get_weather_forecast`參數
