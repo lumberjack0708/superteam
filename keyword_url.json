@@ -5,7 +5,7 @@
   ],
   "@氣溫": [
     "https://www.cwa.gov.tw/V8/C/W/County/index.html",
-    "/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[position()=1 or position()=2]"
+    "/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[position()=1]|/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[2]/span/span[1]"
   ],
   "@降雨機率": [
     "https://www.cwa.gov.tw/V8/C/W/County/index.html",

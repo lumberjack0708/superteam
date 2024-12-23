@@ -25,3 +25,9 @@
 - 於`weather_forecast.py`中新增`get_city`以讀取地址訊息中的城市
 ### changed
 - 更新`main.py`程式碼片段，使其可調用`weather_forecast.py`中的`get_weather_forecast`參數
+
+## [1.2.1] - 2024-12-23
+### changed
+- 變更爬蟲的間隔時間(1.5hr -> 0.5hr)
+### fixed
+- 修正了`@氣溫`的xpath問題
