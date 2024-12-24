@@ -74,8 +74,8 @@ superteam/
 ## 貢獻指南
 歡迎提交 Issue 和 Pull Request 來協助改善專案。
 
-## 作者
-superteam
+## 開發團隊:superteam
+- 開發者:**==李宇涵==**、陳廷鈞、孫葦傑、葉子羽、張子頡
 
 ## 致謝
 - LINE Messaging API
