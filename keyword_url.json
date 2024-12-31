@@ -14,5 +14,9 @@
     "@颱風消息": [
         "https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html",
         "/html/body/div[3]/main/div/div/div"
+    ],
+    "@空氣品質": [
+        "https://airtw.moenv.gov.tw/CHT/Forecast/Forecast_3days.aspx",
+        "/html/body/form/div[4]/main/div/div[2]/div[2]/div[3]"
     ]
 }

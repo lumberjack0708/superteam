@@ -20,7 +20,8 @@ with open("keyword.json", "r", encoding="utf-8") as f:
 def check_info(key,info):
     model = generativeai.GenerativeModel("gemini-2.0-flash-exp")
     prompts = f"""Is the information {info} relevant to the {key}.
-                  If the information shows that there has not any relevant information, please reply with 'true'.
+                  If the information shows that there are relevant information, please reply with 'true'.
+                  Else if the information shows that there are not any relevant information, please reply with 'true'.
                   Reply with 'true' or 'false'.
                   Also provide the reason in zh-TW.
                   """
@@ -28,29 +29,34 @@ def check_info(key,info):
     return resp.text
 
 def set_new_key(key,url,xpath):
-    if key in key_list:
-        if key not in key_url_list:
-            url_data = [url,xpath]
-            key_url_dict[key] = url_data
-            url_data = json.dumps(key_url_dict,ensure_ascii=False)
+    resp = check_info(key,scrape_data(url,xpath))
+    print("judging the information...")
+    if re.search("true",resp):
+        if key in key_list:
+            if key not in key_url_list:
+                url_data = [url,xpath]
+                key_url_dict[key] = url_data
+                url_data = json.dumps(key_url_dict,ensure_ascii=False)
+                with open("keyword_url.json", "w", encoding="utf-8") as f:
+                    f.write(url_data)
+                print(set_info(key))
+                return "The keyword has been added successfully."
+            else:
+                print(set_info(key))
+                return "The keyword already exists."
+        else:
+            key_list.append(key)
+            key_url_dict[key] = [url,xpath]
+            url_data = json.dumps(key_url_dict,ensure_ascii=False, indent=4)
             with open("keyword_url.json", "w", encoding="utf-8") as f:
                 f.write(url_data)
+            key_data = json.dumps(key_list,ensure_ascii=False, indent=4)
+            with open("keyword.json", "w", encoding="utf-8") as f:
+                f.write(key_data)
             print(set_info(key))
             return "The keyword has been added successfully."
-        else:
-            print(set_info(key))
-            return "The keyword already exists."
     else:
-        key_list.append(key)
-        key_url_dict[key] = [url,xpath]
-        url_data = json.dumps(key_url_dict,ensure_ascii=False, indent=4)
-        with open("keyword_url.json", "w", encoding="utf-8") as f:
-            f.write(url_data)
-        key_data = json.dumps(key_list,ensure_ascii=False, indent=4)
-        with open("keyword.json", "w", encoding="utf-8") as f:
-            f.write(key_data)
-        print(set_info(key))
-        return "The keyword has been added successfully."
+        return "The information is not relevant to the requirements."
 
 def set_info(key):
     with open("information_store.json", "r", encoding="utf-8") as f:
@@ -63,13 +69,10 @@ def set_info(key):
     resp = check_info(key,info)
     print(info)
     print(resp)
-    if re.search("true",resp):
-        info_dict[key] = {"info": info, "time": t, "space": 0.5}
-        print(info_dict)
-        info_data = json.dumps(info_dict,ensure_ascii=False, indent=4)
-        with open("information_store.json", "w", encoding="utf-8") as f:
-            f.write(info_data)
-        return "The information has been added successfully."
-    else:
-        return "The information is not relevant to the requirements."    
+    info_dict[key] = {"info": info, "time": t, "space": 0.5}
+    print(info_dict)
+    info_data = json.dumps(info_dict,ensure_ascii=False, indent=4)
+    with open("information_store.json", "w", encoding="utf-8") as f:
+        f.write(info_data)
+    return "The information has been added successfully."
     
