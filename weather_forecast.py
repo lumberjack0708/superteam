@@ -1,6 +1,8 @@
 from selenium import webdriver
 import time
 from bs4 import BeautifulSoup
+from selenium.webdriver.chrome.options import Options
+import re
 
 # 地區對應的 CID 字典
 CID_MAPPING = {
@@ -27,13 +29,19 @@ CID_MAPPING = {
     "金門縣": "09020",
     "連江縣": "09007"
 }
+city_list = list(CID_MAPPING.keys())
 
 def scrape_table_selenium(cid):
     # 建立目標 URL
     url = f"https://www.cwa.gov.tw/V8/C/W/County/County.html?CID={cid}"
 
-    # 建立 WebDriver
-    driver = webdriver.Chrome()
+    # 設定 Chrome 選項（無頭模式）
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+
+    # 啟動 Selenium 瀏覽器
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
 
     # 等待 JavaScript 加載完成
@@ -104,6 +112,7 @@ def format_weather_output(table_data):
 
 def get_weather_forecast(location):
     # 根據地區名稱取得天氣預報
+    location = get_city(location)
     cid = CID_MAPPING.get(location)
     if not cid:
         return "地區名稱無效，請重新輸入。"
@@ -113,3 +122,11 @@ def get_weather_forecast(location):
         return format_weather_output(table_data)
     else:
         return "無法取得天氣資料，請稍後再試。"
+    
+def get_city(text):
+    for city in city_list:
+        if re.search(city,text):
+            CID = CID_MAPPING[city]
+            print(CID)
+            text = city
+            return text

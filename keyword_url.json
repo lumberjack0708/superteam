@@ -1,14 +1,22 @@
 {
-  "@颱風假": [
-    "https://www.dgpa.gov.tw/typh/daily/nds.html", 
-    "/html/body/div[4]/table/tbody[2]/tr[position() < last()]"
-  ],
-  "@氣溫": [
-    "https://www.cwa.gov.tw/V8/C/W/County/index.html",
-    "/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[position()=1 or position()=2]"
-  ],
-  "@降雨機率": [
-    "https://www.cwa.gov.tw/V8/C/W/County/index.html",
-    "/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[position()=1 or position()=3]"
-  ]
-  }
+    "@颱風假": [
+        "https://www.dgpa.gov.tw/typh/daily/nds.html",
+        "/html/body/div[4]/table/tbody[2]/tr[position() < last()]"
+    ],
+    "@氣溫": [
+        "https://www.cwa.gov.tw/V8/C/W/County/index.html",
+        "/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[position()=1]|/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[2]/span/span[1]"
+    ],
+    "@降雨機率": [
+        "https://www.cwa.gov.tw/V8/C/W/County/index.html",
+        "/html/body/div[3]/main/div[1]/div[2]/div[2]/div/div/ol/li[*]/a/span[position()=1 or position()=3]"
+    ],
+    "@颱風消息": [
+        "https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html",
+        "/html/body/div[3]/main/div/div/div"
+    ],
+    "@空氣品質": [
+        "https://airtw.moenv.gov.tw/CHT/Forecast/Forecast_3days.aspx",
+        "/html/body/form/div[4]/main/div/div[2]/div[2]/div[3]"
+    ]
+}

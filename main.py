@@ -8,7 +8,7 @@ from text_function import main_text, store, get_from_store
 import os
 from vision import vision
 from dotenv import load_dotenv
-from record_image import record_image
+from weather_forecast import get_weather_forecast
 
 # setting
 app = Flask(__name__)
@@ -43,11 +43,13 @@ def serve_image(filename):
     return send_from_directory('image', filename)
 
 if_need_address = False
+furture = False
 
 # message reply
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     global if_need_address
+    global furture
     receive_text = event.message.text
     chat_id = event.source.user_id  # 提取 chat_id
 
@@ -56,6 +58,20 @@ def handle_message(event):
         message = TextSendMessage(text="請上傳一張天氣圖片")
         line_bot_api.reply_message(event.reply_token, message)
         return
+    elif receive_text == "@天氣預報":
+        send_loading(chat_id, 10)
+        if_need_address = True
+        furture = True
+        message = TextSendMessage(
+                text="請分享你的位置",
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=LocationAction(label="位置")
+                        )
+                    ]
+                )
+            )
     else:
         send_loading(chat_id,10)
         res_text, is_main = main_text(receive_text)
@@ -81,13 +97,21 @@ def handle_message(event):
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
     global if_need_address
+    global furture
     if if_need_address:
-        address = event.message.address
-        store_text = get_from_store()
-        text = f"使用者的問題及已取得的相關資訊:{store_text};\n使用者的位置:{address};\n幫我生成簡單回應並給予建議"
-        response = chat_with_loading(event.source.user_id, text)
-        message = TextSendMessage(text=response)
-        line_bot_api.reply_message(event.reply_token, message)
+        if furture == False:
+            address = event.message.address
+            store_text = get_from_store()
+            text = f"使用者的問題及已取得的相關資訊:{store_text};\n使用者的位置:{address};\n幫我生成簡單回應並給予建議"
+            response = chat_with_loading(event.source.user_id, text)
+            message = TextSendMessage(text=response)
+            line_bot_api.reply_message(event.reply_token, message)
+        elif furture == True:
+            address = event.message.address
+            send_loading(event.source.user_id, 15)
+            response = get_weather_forecast(address)
+            message = TextSendMessage(text=response)
+            line_bot_api.reply_message(event.reply_token, message)
     else:
         lon = event.message.longitude
         lat = event.message.latitude
