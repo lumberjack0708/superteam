@@ -1,4 +1,5 @@
 import json
+import random
 
 def read_and_combine_data():
     # 載入服裝建議資料
@@ -30,19 +31,19 @@ def read_and_combine_data():
         else:
             city_temp_min = None
 
-        # 根據氣溫範圍獲取服裝建議
+        # 根據氣溫範圍隨機挑選幾個服裝建議
         clothing_suggestion = "No suggestion"
         if city_temp_min is not None:
             for temperature_range, clothing in cloth_dict['cloth'].items():
                 if '~' in temperature_range:
                     temp_range_min, temp_range_max = map(int, temperature_range.split('~'))
                     if temp_range_min <= city_temp_min <= temp_range_max:
-                        clothing_suggestion = ", ".join(clothing)
+                        clothing_suggestion = ", ".join(random.sample(clothing, min(3, len(clothing))))
                         break
                 elif '>=' in temperature_range:
                     temp_range_min = int(temperature_range.split('>=')[1])
                     if city_temp_min >= temp_range_min:
-                        clothing_suggestion = ", ".join(clothing)
+                        clothing_suggestion = ", ".join(random.sample(clothing, min(3, len(clothing))))
                         break
 
         # 串連成句子
