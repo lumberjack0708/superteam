@@ -1,6 +1,14 @@
 import json
 from datetime import datetime, timedelta
 
+
+
+
+
+
+
+
+
 # 載入服裝建議資料
 with open("cloth.json", "r", encoding="utf-8") as f:
     cloth_dict = json.load(f)  # 使用 json.load() 來解析 JSON 文件
