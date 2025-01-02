@@ -1,8 +1,11 @@
 import requests
 import json
+import os
+import dotenv
 
+dotenv.load_dotenv()
 # 設定 API 金鑰與 URL
-api_key = ""  # 換成你的 API 金鑰
+api_key = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')  # 換成你的 API 金鑰
 url = f""
 
 # 設定請求的資料
