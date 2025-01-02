@@ -2,8 +2,8 @@ import requests
 import json
 
 # 設定 API 金鑰與 URL
-api_key = "AIzaSyDKSzlt-NNGdFaTqOUQeVeKEWMJSAiQXC8"  # 換成你的 API 金鑰
-url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+api_key = ""  # 換成你的 API 金鑰
+url = f""
 
 # 設定請求的資料
 headers = {
