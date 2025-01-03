@@ -8,7 +8,8 @@ from text_function import main_text, store, get_from_store
 import os
 from vision import vision
 from dotenv import load_dotenv
-from weather_forecast import get_weather_forecast
+from weather_forecast import get_weather_forecast,get_city
+from cloth_suggestion import cloth_suggestion
 
 # setting
 app = Flask(__name__)
@@ -43,13 +44,15 @@ def serve_image(filename):
     return send_from_directory('image', filename)
 
 if_need_address = False
-furture = False
+forcast = False
+clothes = False
 
 # message reply
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     global if_need_address
-    global furture
+    global forcast
+    global clothes
     receive_text = event.message.text
     chat_id = event.source.user_id  # 提取 chat_id
 
@@ -61,7 +64,21 @@ def handle_message(event):
     elif receive_text == "@天氣預報":
         send_loading(chat_id, 10)
         if_need_address = True
-        furture = True
+        forcast = True
+        message = TextSendMessage(
+                text="請分享你的位置",
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=LocationAction(label="位置")
+                        )
+                    ]
+                )
+            )
+    elif receive_text == "@服裝建議":
+        send_loading(chat_id, 10)
+        if_need_address = True
+        clothes = True
         message = TextSendMessage(
                 text="請分享你的位置",
                 quick_reply=QuickReply(
@@ -97,21 +114,32 @@ def handle_message(event):
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
     global if_need_address
-    global furture
+    global forcast
+    global clothes
     if if_need_address:
-        if furture == False:
+        if forcast == False:
             address = event.message.address
             store_text = get_from_store()
             text = f"使用者的問題及已取得的相關資訊:{store_text};\n使用者的位置:{address};\n幫我生成簡單回應並給予建議"
             response = chat_with_loading(event.source.user_id, text)
             message = TextSendMessage(text=response)
             line_bot_api.reply_message(event.reply_token, message)
-        elif furture == True:
+        elif forcast == True:
             address = event.message.address
             send_loading(event.source.user_id, 15)
             response = get_weather_forecast(address)
             message = TextSendMessage(text=response)
             line_bot_api.reply_message(event.reply_token, message)
+            forcast = False
+        elif clothes == True:
+            address = event.message.address
+            send_loading(event.source.user_id, 15)
+            res = cloth_suggestion(get_city(address))
+            print(res)
+            res = chat_with_loading(event.source.user_id, res)
+            message = TextSendMessage(text=res)
+            line_bot_api.reply_message(event.reply_token, message)
+            clothes = False
     else:
         lon = event.message.longitude
         lat = event.message.latitude

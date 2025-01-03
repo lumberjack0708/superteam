@@ -41,8 +41,13 @@
 ### added
 - 新增了關鍵字`@空氣品質`
 
-## [1.2.0] - 2024-12-31
+## [1.5.0] - 2024-12-31
 ### added
 - 於`cloth1.py`  中新增讀取氣溫及降雨機率功能
 - 於`cloth2.py`  中新增讀取紫外線功能
 - 於`cloth.json`增加參數內容
+
+## [1.6.0] - 2025-1-3
+### changed
+- 更新`main.py`程式碼片段，使其可調用`clothes_suggestion.py`中的`clothes_suggestion`參數用以提供服裝建議
+- 更新`gemini.py`及`vision.py`中的prompts對回應進行優化

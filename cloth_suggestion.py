@@ -1,14 +1,29 @@
 import json
 import random
+from text_function import time_space, get_info_from_json, get_specia_reply
 
-def read_and_combine_data():
+def cloth_suggestion(uesr_city):
     # 載入服裝建議資料
+    with open("keyword.json", "r", encoding="utf-8") as f:
+        keys = f.read()
+        keys = json.loads(keys)
+
+    with open("keyword_url.json","r",encoding="utf-8") as f:
+        key_urls = f.read()
+        key_urls = json.loads(key_urls)
+
+    for key in keys:
+        refresh = time_space(get_info_from_json(key))
+        if refresh == True:
+            get_specia_reply(key)
+
     with open("cloth.json", "r", encoding="utf-8") as f:
         cloth_dict = json.load(f)
 
     # 載入氣象資料
     with open("information_store.json", "r", encoding="utf-8") as f:
-        information_dict = json.load(f)
+        information_dict = f.read()
+        information_dict = json.loads(information_dict)
 
     # 定義城市列表
     cities = [
@@ -89,11 +104,5 @@ def read_and_combine_data():
         # 整合輸出結果
         result = f"{city} 的氣溫範圍是 {city_temp}，降雨機率是 {city_rain}，建議穿著: {clothing_suggestion}，降雨建議: {rain_suggestion}。"
         results.append(result)
-
-    return results
-
-# 執行程式並輸出結果
-if __name__ == "__main__":
-    combined_data = read_and_combine_data()
-    for data in combined_data:
-        print(data)
+        res = f"使用者所在地:{uesr_city}，\n各城市穿著建議:\n{results}，請幫我根據使用者所在地城市給出穿著建議"
+    return res

@@ -43,9 +43,11 @@ def chat_with_loading(chat_id, user_message):
         chat = model.start_chat(
             history=[
                 {"role": "user", "parts": "You are a chatbot.You shound never provide code."},
+                {"role": "user", "parts": "You are a chatbot.Your response should only include text message."},
                 {"role": "user", "parts": "If there are more than one answer, please provide the most important one."},
                 {"role": "user", "parts": "Use simple sentences or short paragraphs to answer questions."},
                 {"role": "user", "parts": "If uses ask for code,reject it."},
+                {"role": "user", "parts": "Think step by step before answering and try to give a high quality response."},
                 {"role": "user", "parts": "Always answer in zh_TW."}
             ]
         )
