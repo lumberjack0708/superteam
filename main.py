@@ -134,15 +134,8 @@ def handle_location_message(event):
     global forcast
     global clothes
     global farm
-    if if_need_address:
-        if forcast == False:
-            address = event.message.address
-            store_text = get_from_store()
-            text = f"使用者的問題及已取得的相關資訊:{store_text};\n使用者的位置:{address};\n幫我生成簡單回應並給予建議"
-            response = chat_with_loading(event.source.user_id, text)
-            message = TextSendMessage(text=response)
-            line_bot_api.reply_message(event.reply_token, message)
-        elif forcast == True:
+    if if_need_address == True:
+        if forcast == True:
             address = event.message.address
             send_loading(event.source.user_id, 15)
             response = get_weather_forecast(address)
@@ -166,6 +159,7 @@ def handle_location_message(event):
             line_bot_api.reply_message(event.reply_token, message)
             farm = False
     else:
+        send_loading(event.source.user_id, 10)
         lon = event.message.longitude
         lat = event.message.latitude
         message = LocationSendMessage(

@@ -51,3 +51,10 @@
 ### changed
 - 更新`main.py`程式碼片段，使其可調用`clothes_suggestion.py`中的`clothes_suggestion`參數用以提供服裝建議
 - 更新`gemini.py`及`vision.py`中的prompts對回應進行優化
+
+## [1.7.0] - 2025-1-4
+### added
+- 新增`farm.py`可使用其中的`farm_advice`取得各地區的農業建議
+### changed
+- 更新`main.py`程式碼片段，使其可調用`farm.py`中的`farm_advice`參數用以提供服裝建議
+- 修復`main.py`中位置訊息輸入的bug
