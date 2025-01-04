@@ -10,6 +10,7 @@ from vision import vision
 from dotenv import load_dotenv
 from weather_forecast import get_weather_forecast,get_city
 from cloth_suggestion import cloth_suggestion
+from farm import farm_advice
 
 # setting
 app = Flask(__name__)
@@ -46,6 +47,7 @@ def serve_image(filename):
 if_need_address = False
 forcast = False
 clothes = False
+farm = False
 
 # message reply
 @handler.add(MessageEvent, message=TextMessage)
@@ -53,6 +55,7 @@ def handle_message(event):
     global if_need_address
     global forcast
     global clothes
+    global farm
     receive_text = event.message.text
     chat_id = event.source.user_id  # 提取 chat_id
 
@@ -79,6 +82,20 @@ def handle_message(event):
         send_loading(chat_id, 10)
         if_need_address = True
         clothes = True
+        message = TextSendMessage(
+                text="請分享你的位置",
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=LocationAction(label="位置")
+                        )
+                    ]
+                )
+            )
+    elif receive_text == "@農情資訊":
+        send_loading(chat_id, 10)
+        farm = True
+        if_need_address = True
         message = TextSendMessage(
                 text="請分享你的位置",
                 quick_reply=QuickReply(
@@ -116,6 +133,7 @@ def handle_location_message(event):
     global if_need_address
     global forcast
     global clothes
+    global farm
     if if_need_address:
         if forcast == False:
             address = event.message.address
@@ -140,6 +158,13 @@ def handle_location_message(event):
             message = TextSendMessage(text=res)
             line_bot_api.reply_message(event.reply_token, message)
             clothes = False
+        elif farm == True:
+            address = event.message.address
+            send_loading(event.source.user_id, 60)
+            response = farm_advice(address)
+            message = TextSendMessage(text=response)
+            line_bot_api.reply_message(event.reply_token, message)
+            farm = False
     else:
         lon = event.message.longitude
         lat = event.message.latitude
