@@ -10,4 +10,4 @@ import re
 # xpath = "/html/body/form/div[4]/main/div/div[2]/div[2]/div[3]"
 # key = "@空氣品質"
 # set_new_key(key,url,xpath)
-print(get_specia_reply("@氣溫"))
+print(get_specia_reply("@降雨機率"))
