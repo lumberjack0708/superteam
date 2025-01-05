@@ -3,8 +3,8 @@ import time
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 import re
+import matplotlib.pyplot as plt
 
-# 地區對應的 CID 字典
 CID_MAPPING = {
     "基隆市": "11017",
     "台北市": "63",
@@ -32,26 +32,20 @@ CID_MAPPING = {
 city_list = list(CID_MAPPING.keys())
 
 def scrape_table_selenium(cid):
-    # 建立目標 URL
     url = f"https://www.cwa.gov.tw/V8/C/W/County/County.html?CID={cid}"
 
-    # 設定 Chrome 選項（無頭模式）
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
 
-    # 啟動 Selenium 瀏覽器
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
 
-    # 等待 JavaScript 加載完成
     time.sleep(3)
 
-    # 取得完整的 HTML
     html = driver.page_source
     driver.quit()
 
-    # 使用 BeautifulSoup 解析 HTML
     soup = BeautifulSoup(html, "html.parser")
     table = soup.find("table", {"id": "PC_Week_MOD", "class": "table table-bordered"})
     if not table:
@@ -60,13 +54,11 @@ def scrape_table_selenium(cid):
 
     rows = table.find_all("tr")
 
-    # 解析表格
     table_data = []
     for row in rows:
         cells = row.find_all(["td", "th"])
         row_data = []
         for cell in cells:
-            # 優先抓取 class="tem-C is-active" 的攝氏溫度
             celsius_span = cell.find("span", class_="tem-C is-active")
             if celsius_span:
                 row_data.append(celsius_span.get_text(strip=True))
@@ -77,41 +69,56 @@ def scrape_table_selenium(cid):
     return table_data
 
 def format_weather_output(table_data):
-    # 格式化輸出資料
     if not table_data or len(table_data) < 2:
         return "表格資料不足"
 
-    # 第一列為標題
-    location = table_data[0][0]  # 地名
-    dates = table_data[0][1:]    # 日期
-    output = f"{location} - 🌤️ 未來一周天氣預報\n \n"
+    location = table_data[0][0]
+    dates = table_data[0][1:]
+    output = f"{location} - \ud83c\udf24\ufe0f 未來一周天氣預報\n \n"
 
-    # 每列數據
     for date_idx, date in enumerate(dates):
-        output += f"🗓️ {date}\n"  # 僅顯示一次日期
+        output += f"\ud83d\uddd3\ufe0f {date}\n"
         for row in table_data[1:]:
-            label = row[0]  # 例如 "白天", "晚上", "體感溫度", "紫外線"
-            value = row[date_idx + 1]  # 對應當前日期的數值
+            label = row[0]
+            value = row[date_idx + 1]
 
-            # 根據標籤添加對應的表情符號
             if label == "白天":
-                emoji = "☀️"
+                emoji = "\u2600\ufe0f"
             elif label == "晚上":
-                emoji = "🌙"
+                emoji = "\ud83c\udf19"
             elif label == "體感溫度":
-                emoji = "🌡️"
+                emoji = "\ud83c\udf21\ufe0f"
             elif label == "紫外線":
-                emoji = "🌞"
+                emoji = "\ud83c\udf1e"
             else:
                 emoji = ""
 
             output += f"{emoji} {label}: {value}\n"
-        output += "\n"  # 每個日期之間空一行
+        output += "\n"
 
     return output
 
+def plot_weather_trend(dates, day_temps, night_temps, rain_chances):
+    plt.figure(figsize=(10, 6))
+
+    plt.plot(dates, day_temps, label='Day Temp (°C)', marker='o', linestyle='-')
+    plt.plot(dates, night_temps, label='Night Temp (°C)', marker='o', linestyle='--')
+
+    plt.bar(dates, rain_chances, alpha=0.5, label='Rain Chance (%)')
+
+    plt.title("Weather Trends for the Next Week")
+    plt.xlabel("Date")
+    plt.ylabel("Temperature (°C) / Rain Chance (%)")
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.7)
+
+    file_path = "/mnt/data/weather_trend.png"
+    plt.savefig(file_path)
+    plt.close()
+
+    return file_path
+
 def get_weather_forecast(location):
-    # 根據地區名稱取得天氣預報
     location = get_city(location)
     cid = CID_MAPPING.get(location)
     if not cid:
@@ -122,10 +129,10 @@ def get_weather_forecast(location):
         return format_weather_output(table_data)
     else:
         return "無法取得天氣資料，請稍後再試。"
-    
+
 def get_city(text):
     for city in city_list:
-        if re.search(city,text):
+        if re.search(city, text):
             CID = CID_MAPPING[city]
             print(CID)
             text = city
