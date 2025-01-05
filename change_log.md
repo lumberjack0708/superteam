@@ -58,3 +58,7 @@
 ### changed
 - 更新`main.py`程式碼片段，使其可調用`farm.py`中的`farm_advice`參數用以提供服裝建議
 - 修復`main.py`中位置訊息輸入的bug
+
+## [1.7.1] - 2025-1-5
+### changed
+- 修復了圖片接收問題
