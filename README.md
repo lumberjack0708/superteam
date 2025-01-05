@@ -12,6 +12,7 @@
 - 支援圖片識別天氣狀況
 - 智慧對話功能（基於 Google Gemini AI）
 - 動態載入動畫提升使用體驗
+- 未來一週農業天氣預報與農務建議
 
 ## 系統需求
 
@@ -68,7 +69,8 @@ superteam/
 ├── text_function.py      # 文字處理功能
 ├── URL_load.py           # 網頁爬蟲功能
 ├── requirements.txt      # 相依套件清單
-└── .env.example          # 環境變數範例
+├── .env.example          # 環境變數範例
+└── farm.py               # 農情資訊功能
 ```
 ## 版本更新
 詳細更新資訊請參考 [change_log.md](change_log.md)。
