@@ -6,7 +6,8 @@ from URL_load import scrape_data
 from set_new_key import set_new_key
 import re
 
-url = "https://airtw.moenv.gov.tw/CHT/Forecast/Forecast_3days.aspx"
-xpath = "/html/body/form/div[4]/main/div/div[2]/div[2]/div[3]"
-key = "@空氣品質"
-set_new_key(key,url,xpath)
+# url = "https://airtw.moenv.gov.tw/CHT/Forecast/Forecast_3days.aspx"
+# xpath = "/html/body/form/div[4]/main/div/div[2]/div[2]/div[3]"
+# key = "@空氣品質"
+# set_new_key(key,url,xpath)
+print(get_specia_reply("@降雨機率"))

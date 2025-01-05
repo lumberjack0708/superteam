@@ -68,7 +68,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
         return
     elif receive_text == "@天氣預報":
-        send_loading(chat_id, 10)
+        send_loading(chat_id, 60)
         if_need_address = True
         forcast = True
         message = TextSendMessage(
@@ -82,7 +82,7 @@ def handle_message(event):
                 )
             )
     elif receive_text == "@服裝建議":
-        send_loading(chat_id, 10)
+        send_loading(chat_id, 60)
         if_need_address = True
         clothes = True
         message = TextSendMessage(
@@ -96,7 +96,7 @@ def handle_message(event):
                 )
             )
     elif receive_text == "@農情資訊":
-        send_loading(chat_id, 10)
+        send_loading(chat_id, 60)
         farm = True
         if_need_address = True
         message = TextSendMessage(
@@ -110,7 +110,7 @@ def handle_message(event):
                 )
             )
     else:
-        send_loading(chat_id,10)
+        send_loading(chat_id,60)
         res_text, is_main = main_text(receive_text)
         if not is_main:
             # 使用 chat_with_loading 進行回應並顯示動畫
@@ -140,14 +140,14 @@ def handle_location_message(event):
     if if_need_address == True:
         if forcast == True:
             address = event.message.address
-            send_loading(event.source.user_id, 15)
+            send_loading(event.source.user_id, 60)
             response = get_weather_forecast(address)
             message = TextSendMessage(text=response)
             line_bot_api.reply_message(event.reply_token, message)
             forcast = False
         elif clothes == True:
             address = event.message.address
-            send_loading(event.source.user_id, 15)
+            send_loading(event.source.user_id, 60)
             res = cloth_suggestion(get_city(address))
             print(res)
             res = chat_with_loading(event.source.user_id, res)
@@ -161,8 +161,17 @@ def handle_location_message(event):
             message = TextSendMessage(text=response)
             line_bot_api.reply_message(event.reply_token, message)
             farm = False
+        else:
+            send_loading(event.source.user_id, 60)
+            address = event.message.address
+            res_text = get_from_store()
+            res_text = res_text + address
+            response = chat_with_loading(event.source.user_id, res_text)
+            message = TextSendMessage(text=response)
+            line_bot_api.reply_message(event.reply_token, message)
+        if_need_address = False
     else:
-        send_loading(event.source.user_id, 10)
+        send_loading(event.source.user_id, 60)
         lon = event.message.longitude
         lat = event.message.latitude
         message = LocationSendMessage(
