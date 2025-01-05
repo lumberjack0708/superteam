@@ -48,6 +48,7 @@ if_need_address = False
 forcast = False
 clothes = False
 farm = False
+pic = False
 
 # message reply
 @handler.add(MessageEvent, message=TextMessage)
@@ -56,11 +57,13 @@ def handle_message(event):
     global forcast
     global clothes
     global farm
+    global pic
     receive_text = event.message.text
     chat_id = event.source.user_id  # 提取 chat_id
 
     print(receive_text)
     if receive_text == "@天氣":
+        pic = True
         message = TextSendMessage(text="請上傳一張天氣圖片")
         line_bot_api.reply_message(event.reply_token, message)
         return
@@ -172,20 +175,25 @@ def handle_location_message(event):
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image_message(event):
-    if not os.path.exists("image"):
-        os.mkdir("image")
-    message_content = line_bot_api.get_message_content(event.message.id)
-    file_path = f"image/user_input.jpg"
-    print(file_path)
-    chat_id = event.source.user_id
-    with open(file_path, 'wb') as fd:
-        for chunk in message_content.iter_content():
-            fd.write(chunk)
-    prediction = vision(chat_id)
-    print(prediction)
-    res_text = main_text(prediction, predict=True)
-    response = chat_with_loading(chat_id, res_text)
-    message = TextSendMessage(text=response)
+    global pic
+    if pic == True:
+        if not os.path.exists("image"):
+            os.mkdir("image")
+        message_content = line_bot_api.get_message_content(event.message.id)
+        file_path = f"image/user_input.jpg"
+        print(file_path)
+        chat_id = event.source.user_id
+        with open(file_path, 'wb') as fd:
+            for chunk in message_content.iter_content():
+                fd.write(chunk)
+        prediction = vision(chat_id)
+        print(prediction)
+        res_text = main_text(prediction, predict=True)
+        response = chat_with_loading(chat_id, res_text)
+        message = TextSendMessage(text=response)
+    elif pic == False:
+        message = TextSendMessage(text="目前不支援天氣預報以外的圖片功能")
+    pic = False
     line_bot_api.reply_message(event.reply_token, message)
     
 if __name__ == "__main__":
