@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # 從環境變數中獲取 LINE 的 token 和 secret
+api_key = os.getenv("gemini_api_key")
+generativeai.configure(api_key=api_key)
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 LINE_CHANNEL_SECRET = os.getenv('LINE_CHANNEL_SECRET')
 
@@ -34,9 +36,6 @@ def chat_with_loading(chat_id, user_message):
         # # 等待模擬的處理時間
         # time.sleep(5)  # 模擬處理時間
         
-        # 配置 Gemini API
-        api_key = os.getenv("gemini_api_key")
-        generativeai.configure(api_key=api_key)
         model = generativeai.GenerativeModel("gemini-2.0-flash-exp")
 
         # 發送請求到 Gemini API

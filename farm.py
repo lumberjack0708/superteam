@@ -94,4 +94,4 @@ def farm_advice(address):
     elif area[extract_city_from_address(address)] not in inf_list:
         return "目前僅提供台灣本島的農業資訊，暫無您查詢地區的資訊"
     return get_advice(inf[area[extract_city_from_address(address)]], advice)
-print(farm_advice("台北市信義區信義路五段7號"))
+

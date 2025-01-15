@@ -6,6 +6,7 @@ from gemini import send_loading
 
 load_dotenv()
 api_key = os.getenv("gemini_api_key")
+generativeai.configure(api_key=api_key)
 
 model = generativeai.GenerativeModel("gemini-2.0-flash-exp")
 # 設定要傳給模型的圖片

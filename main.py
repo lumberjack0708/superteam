@@ -1,5 +1,5 @@
 from flask import Flask, request, abort, send_from_directory
-from linebot import LineBotApi, WebhookHandler
+from linebot import LineBotApi,WebhookHandler
 from linebot.v3.messaging import MessagingApi
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageMessage, LocationMessage, LocationSendMessage, QuickReply, QuickReplyButton, LocationAction
@@ -7,14 +7,14 @@ from gemini import chat_with_loading,send_loading   # loading animation函數引
 from text_function import main_text, store, get_from_store
 import os
 from vision import vision
-from dotenv import load_dotenv
+import dotenv
 from weather_forecast import get_weather_forecast,get_city
 from cloth_suggestion import cloth_suggestion
 from farm import farm_advice
 
 # setting
 app = Flask(__name__)
-load_dotenv()
+dotenv.load_dotenv()
 
 # 設定你的 LINE Bot 的 Channel Access Token 和 Channel Secret
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
@@ -206,4 +206,4 @@ def handle_image_message(event):
     line_bot_api.reply_message(event.reply_token, message)
     
 if __name__ == "__main__":
-    app.run()
+    app.run() 
